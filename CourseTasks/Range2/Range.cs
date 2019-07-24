@@ -2,7 +2,7 @@
 
 namespace Academits
 {
-    partial class Range
+    class Range
     {
         public double From { get; set; }
         public double To { get; set; }
@@ -26,6 +26,27 @@ namespace Academits
         public bool IsInside(double number)
         {
             return number >= From && number <= To;
+        }
+
+        public CrossingType GetCrossingType(Range range)
+        {
+            if (range.From >= From && range.From <= To && To <= range.To)
+            {
+                return CrossingType.CrossingThisRangeRight;
+            }
+            if (From >= range.From && From <= range.To && range.To <= To)
+            {
+                return CrossingType.CrossingThisRangeLeft;
+            }
+            if (range.From >= From && range.To <= To)
+            {
+                return CrossingType.ContainingRange;
+            }
+            if (From >= range.From && To <= range.To)
+            {
+                return CrossingType.ContainingThisRange;
+            }
+            return CrossingType.NotCrossing;
         }
 
         public Range GetCrossing(Range range)
