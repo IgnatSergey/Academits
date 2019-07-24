@@ -2,7 +2,7 @@
 
 namespace Academits
 {
-    class Range
+    partial class Range
     {
         public double From { get; set; }
         public double To { get; set; }
@@ -25,131 +25,62 @@ namespace Academits
 
         public bool IsInside(double number)
         {
-            return number > From && number < To;
-        }
-
-        public enum CrossingType
-        {
-            CrossingThisRangeRight = 0,
-            CrossingThisRangeLeft = 1,
-            ContainingRange = 2,
-            ContainingThisRange = 3,
-            NotCrossing = 4
-        }
-
-        public CrossingType GetCrossingType(Range range)
-        {
-            double startThisRange = From;
-            double endThisRange = To;
-            double startRange = range.From;
-            double endRange = range.To;
-
-            if (startRange >= startThisRange && startRange <= endThisRange && endThisRange <= endRange)
-            {
-                return CrossingType.CrossingThisRangeRight;
-            }
-            else if (startThisRange >= startRange && startThisRange <= endRange && endRange <= endThisRange)
-            {
-                return CrossingType.CrossingThisRangeLeft;
-            }
-            else if (startRange >= startThisRange && endRange <= endThisRange)
-            {
-                return CrossingType.ContainingRange;
-            }
-            else if (startThisRange >= startRange && endThisRange <= endRange)
-            {
-                return CrossingType.ContainingThisRange;
-            }
-            return CrossingType.NotCrossing;
+            return number >= From && number <= To;
         }
 
         public Range GetCrossing(Range range)
         {
-            double startThisRange = From;
-            double endThisRange = To;
-            double startRange = range.From;
-            double endRange = range.To;
-
-            CrossingType typeCrossing = GetCrossingType(range);
-            if ((int)typeCrossing == 0)
+            if (To <= range.From || From >= range.To)
             {
-                return new Range(startRange, endThisRange);
-            }
-            else if ((int)typeCrossing == 1)
-            {
-                return new Range(startThisRange, endRange);
-            }
-            else if ((int)typeCrossing == 2)
-            {
-                return new Range(startRange, endRange);
-            }
-            else if ((int)typeCrossing == 3)
-            {
-                return new Range(startThisRange, endThisRange);
+                return null;
             }
             else
             {
-                return null;
+                return new Range(Math.Max(From, range.From), Math.Min(To, range.To));
             }
         }
 
         public Range[] GetUnion(Range range)
         {
-            double startThisRange = From;
-            double endThisRange = To;
-            double startRange = range.From;
-            double endRange = range.To;
-
-            if (endThisRange < startRange || startThisRange > endRange)
+            if (To < range.From || From > range.To)
             {
-                Range[] arrayRangesUnion = new Range[2];
-                arrayRangesUnion[0] = new Range(startThisRange, endThisRange);
-                arrayRangesUnion[1] = new Range(startRange, endRange);
-                return arrayRangesUnion;
+                return new Range[]
+                {
+                    new Range(From, To),
+                    new Range(range.From, range.To)
+                };
             }
             else
             {
-                Range[] arrayRangesUnion = new Range[1];
-                arrayRangesUnion[0] = new Range(Math.Min(startThisRange, startRange), Math.Max(endThisRange, endRange));
-                return arrayRangesUnion;
+                return new Range[] { new Range(Math.Min(From, range.From), Math.Max(To, range.To)) };
             }
         }
 
         public Range[] GetResidual(Range range)
         {
-            double startThisRange = From;
-            double endThisRange = To;
-            double startRange = range.From;
-            double endRange = range.To;
-
-            if (endThisRange < startRange || startThisRange > endRange)
+            if (To <= range.From || From >= range.To)
             {
-                Range[] arrayRangesResidual = new Range[1];
-                arrayRangesResidual[0] = new Range(startThisRange, endThisRange);
-                return arrayRangesResidual;
+                return new Range[] { new Range(From, To) };
             }
-            else if (startRange < startThisRange && endThisRange < endRange)
+            if (range.From <= From && To <= range.To)
             {
-                return null;
+                return new Range[] { };
             }
-            else if (startRange < startThisRange)
+            if (From < range.From && To > range.To)
             {
-                Range[] arrayRangesResidual = new Range[1];
-                arrayRangesResidual[0] = new Range(endRange, endThisRange);
-                return arrayRangesResidual;
+                return new Range[]
+                {
+                new Range(From, range.From),
+                new Range(range.To, To)
+                };
             }
-            else if (startThisRange < startRange && endThisRange > endRange)
+            if (range.From < From)
             {
-                Range[] arrayRangesResidual = new Range[2];
-                arrayRangesResidual[0] = new Range(startThisRange, startRange);
-                arrayRangesResidual[1] = new Range(endRange, endThisRange);
-                return arrayRangesResidual;
+                return new Range[] { new Range(range.To, To) };
             }
             else
             {
-                Range[] arrayRangesResidual = new Range[1];
-                arrayRangesResidual[0] = new Range(startThisRange, startRange);
-                return arrayRangesResidual;
+                return new Range[] { new Range(From, range.From) };
             }
         }
     }

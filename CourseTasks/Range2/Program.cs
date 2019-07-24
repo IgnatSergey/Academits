@@ -6,11 +6,11 @@ namespace Academits
     {
         static void Main(string[] args)
         {
-            double from1 = -8;
-            double to1 = 15;
-            double from2 = -16;
-            double to2 = -9;
-            double number = 20;
+            double from1 = -3;
+            double to1 = 0;
+            double from2 = -9;
+            double to2 = -3;
+            double number = -15;
 
             Range range1 = new Range(from1, to1);
             Range range2 = new Range(from2, to2);
@@ -52,16 +52,9 @@ namespace Academits
             Console.WriteLine(new string('-', 50));
 
             Console.WriteLine("Разность интервала [{0};{1}] и интервала [{2};{3}]:", from1, to1, from2, to2);
-            if (rangesResidual == null)
+            foreach (Range e in rangesResidual)
             {
-                Console.WriteLine("пустое множество");
-            }
-            else
-            {
-                foreach (Range e in rangesResidual)
-                {
-                    e.PrintRange();
-                }
+                e.PrintRange();
             }
             Console.WriteLine(new string('-', 50));
         }
