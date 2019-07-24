@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Academits
+namespace Shape
 {
     class Rectangle : IShape
     {
@@ -12,11 +8,6 @@ namespace Academits
 
         public double Width { get; set; }
         public double Height { get; set; }
-
-        static Rectangle()
-        {
-            epsilon = 1.0e-10;
-        }
 
         public Rectangle(double width, double height)
         {
@@ -60,7 +51,7 @@ namespace Academits
                 return false;
             }
             Rectangle p = (Rectangle)obj;
-            return Math.Abs(this.Width - p.Width) <= epsilon && Math.Abs(this.Height - p.Height) <= epsilon;
+            return Width == p.Width && Height == p.Height;
         }
 
         public override int GetHashCode()

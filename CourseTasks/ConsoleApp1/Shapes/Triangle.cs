@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Academits
+namespace Shape
 {
     class Triangle : IShape
     {
@@ -15,11 +12,6 @@ namespace Academits
         public double Y1 { get; set; }
         public double Y2 { get; set; }
         public double Y3 { get; set; }
-
-        static Triangle()
-        {
-            epsilon = 1.0e-10;
-        }
 
         public Triangle(double x1, double x2, double x3, double y1, double y2, double y3)
         {
@@ -41,21 +33,20 @@ namespace Academits
             return Math.Max(Math.Max(Y1, Y2), Y3) - Math.Min(Math.Min(Y1, Y2), Y3);
         }
 
+        public double GetSideLength(double x1, double x2, double y1, double y2)
+        {
+            return Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
+        }
+
         public double GetArea()
         {
-            double sideALength = Math.Sqrt(Math.Pow(X1 - X2, 2) + Math.Pow(Y1 - Y2, 2));
-            double sideBLength = Math.Sqrt(Math.Pow(X2 - X3, 2) + Math.Pow(Y2 - Y3, 2));
-            double sideCLength = Math.Sqrt(Math.Pow(X1 - X3, 2) + Math.Pow(Y1 - Y3, 2));
-            double halfPerimeter = (sideALength + sideBLength + sideCLength) / 2;
-            return Math.Sqrt(halfPerimeter * (halfPerimeter - sideALength) * (halfPerimeter - sideBLength) * (halfPerimeter - sideCLength));
+            double halfPerimeter = GetPerimeter() / 2;
+            return Math.Sqrt(halfPerimeter * (halfPerimeter - GetSideLength(X1, X2, Y1, Y2)) * (halfPerimeter - GetSideLength(X2, X3, Y2, Y3)) * (halfPerimeter - GetSideLength(X1, X3, Y1, Y3)));
         }
 
         public double GetPerimeter()
         {
-            double sideALength = Math.Sqrt(Math.Pow(X1 - X2, 2) + Math.Pow(Y1 - Y2, 2));
-            double sideBLength = Math.Sqrt(Math.Pow(X2 - X3, 2) + Math.Pow(Y2 - Y3, 2));
-            double sideCLength = Math.Sqrt(Math.Pow(X1 - X3, 2) + Math.Pow(Y1 - Y3, 2));
-            return sideALength + sideBLength + sideCLength;
+            return GetSideLength(X1, X2, Y1, Y2) + GetSideLength(X2, X3, Y2, Y3) + GetSideLength(X1, X3, Y1, Y3);
         }
 
         public override string ToString()
@@ -74,7 +65,7 @@ namespace Academits
                 return false;
             }
             Triangle p = (Triangle)obj;
-            return Math.Abs(this.X1 - p.X1) <= epsilon && Math.Abs(this.X2 - p.X2) <= epsilon && Math.Abs(this.X3 - p.X3) <= epsilon && Math.Abs(this.Y1 - p.Y1) <= epsilon && Math.Abs(this.Y2 - p.Y2) <= epsilon && Math.Abs(this.Y3 - p.Y3) <= epsilon;
+            return X1 == p.X1 && X2 == p.X2 && X3 == p.X3 && Y1 == p.Y1 && Y2 == p.Y2 && Y3 == p.Y3;
         }
 
         public override int GetHashCode()

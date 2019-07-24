@@ -1,50 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Academits
+namespace Shape
 {
-    class Circle : IShape
+    class Square : IShape
     {
         private static readonly double epsilon;
 
-        public double Radius { get; set; }
+        public double Width { get; set; }
 
-        static Circle()
+        public Square(double width)
         {
-            epsilon = 1.0e-10;
-        }
-
-        public Circle(double radius)
-        {
-            Radius = radius;
+            Width = width;
         }
 
         public double GetWidth()
         {
-            return Radius * 2;
+            return Width;
         }
 
         public double GetHeight()
         {
-            return Radius * 2;
+            return Width;
         }
 
         public double GetArea()
         {
-            return Math.PI * Math.Pow(Radius, 2);
+            return Math.Pow(Width, 2);
         }
 
         public double GetPerimeter()
         {
-            return 2 * Math.PI * Radius;
+            return Width * 4;
         }
 
         public override string ToString()
         {
-            return "Радиус круга: " + Radius;
+            return "Сторона квадрата: " + Width;
         }
 
         public override bool Equals(object obj)
@@ -57,15 +48,15 @@ namespace Academits
             {
                 return false;
             }
-            Circle p = (Circle)obj;
-            return Math.Abs(this.Radius - p.Radius) <= epsilon;
+            Square p = (Square)obj;
+            return Width == p.Width;
         }
 
         public override int GetHashCode()
         {
             int prime = 37;
             int hash = 1;
-            return prime * hash + Radius.GetHashCode();
+            return prime * hash + Width.GetHashCode();
         }
     }
 }
