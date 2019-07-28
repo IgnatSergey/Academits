@@ -6,34 +6,31 @@ namespace Academits
     {
         static void Main(string[] args)
         {
-            double from1 = -3;
-            double to1 = 0;
-            double from2 = -9;
-            double to2 = -3;
             double number = -15;
 
-            Range range1 = new Range(from1, to1);
-            Range range2 = new Range(from2, to2);
+            Range range1 = new Range(-3, 0);
+            Range range2 = new Range(-9, -3);
 
             Range rangeCross = range1.GetCrossing(range2);
             Range[] rangesUnion = range1.GetUnion(range2);
             Range[] rangesResidual = range1.GetResidual(range2);
 
-            Console.WriteLine("Длина интервала [{0};{1}] : ", from1, to1);
+            Console.Write("Длина интервала ");
+            range1.PrintRange();
             Console.WriteLine(range1.GetLength());
             Console.WriteLine(new string('-', 50));
 
             if (range1.IsInside(number))
             {
-                Console.WriteLine("Точка {0} принадлежит интервалу [{1};{2}]", number, from1, to1);
+                Console.WriteLine("Точка {0} принадлежит интервалу [{1};{2}]", number, range1.From, range1.To);
             }
             else
             {
-                Console.WriteLine("Точка {0} не принадлежит интервалу [{1};{2}]", number, from1, to1);
+                Console.WriteLine("Точка {0} не принадлежит интервалу [{1};{2}]", number, range1.From, range1.To);
             }
             Console.WriteLine(new string('-', 50));
 
-            Console.WriteLine("Пересечение интервала [{0};{1}] и интервала [{2};{3}]:", from1, to1, from2, to2);
+            Console.WriteLine("Пересечение интервала [{0};{1}] и интервала [{2};{3}]:", range1.From, range1.To, range2.From, range2.To);
             if (rangeCross == null)
             {
                 Console.WriteLine("пустое множество");
@@ -44,14 +41,14 @@ namespace Academits
             }
             Console.WriteLine(new string('-', 50));
 
-            Console.WriteLine("Объединение интервала [{0};{1}] и интервала [{2};{3}]:", from1, to1, from2, to2);
+            Console.WriteLine("Объединение интервала [{0};{1}] и интервала [{2};{3}]:", range1.From, range1.To, range2.From, range2.To);
             foreach (Range e in rangesUnion)
             {
                 e.PrintRange();
             }
             Console.WriteLine(new string('-', 50));
 
-            Console.WriteLine("Разность интервала [{0};{1}] и интервала [{2};{3}]:", from1, to1, from2, to2);
+            Console.WriteLine("Разность интервала [{0};{1}] и интервала [{2};{3}]:", range1.From, range1.To, range2.From, range2.To);
             foreach (Range e in rangesResidual)
             {
                 e.PrintRange();
