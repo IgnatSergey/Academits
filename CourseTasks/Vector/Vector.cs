@@ -4,7 +4,7 @@ namespace Vector
 {
     class Vector
     {
-        public double[] Components { get; set; }
+        private double[] components;
 
         public Vector(int n)
         {
@@ -12,122 +12,80 @@ namespace Vector
             {
                 throw new ArgumentException("Размерность вектора должа быть больше 0");
             }
-            Components = new double[n];
-            for (int i = 0; i < n; i++)
-            {
-                Components[i] = 0;
-            }
+
+            components = new double[n];
         }
 
         public Vector(Vector secondVector)
+            : this(secondVector.components)
         {
-            Components = new double[secondVector.Components.Length];
-            for (int i = 0; i < secondVector.Components.Length; i++)
-            {
-                Components[i] = secondVector.Components[i];
-            }
         }
 
         public Vector(double[] array)
+            : this(array.Length)
         {
-            Components = new double[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                Components[i] = array[i];
-            }
+            Array.Copy(array, components, array.Length);
         }
 
         public Vector(int n, double[] array)
+            : this(n)
         {
-            if (n <= 0)
-            {
-                throw new ArgumentException("Размерность вектора должа быть больше 0");
-            }
-            Components = new double[n];
             if (n > array.Length)
             {
-                for (int i = 0; i < array.Length; i++)
-                {
-                    Components[i] = array[i];
-                }
-                for (int i = array.Length + 1; i < n; i++)
-                {
-                    Components[i] = 0;
-                }
+                Array.Copy(array, components, array.Length);
             }
             else
             {
-                for (int i = 0; i < n; i++)
-                {
-                    Components[i] = array[i];
-                }
+                Array.Copy(array, components, n);
             }
         }
 
         public int GetSize()
         {
-            return Components.Length;
+            return components.Length;
         }
 
-        public Vector GetSum(Vector secondVector)
+        public void GetSum(Vector secondVector)
         {
-            int maxDimension = GetSize();
-            if (maxDimension < secondVector.GetSize())
-            {
-                maxDimension = secondVector.GetSize();
-            }
-            Vector copySecondVector = new Vector(maxDimension, secondVector.Components);
-            Vector copyFirstVector = new Vector(maxDimension, Components);
-            Vector sumVector = new Vector(maxDimension);
+            int maxDimension = Math.Max(GetSize(), secondVector.GetSize());
+            Array.Resize(ref components, maxDimension);
             for (int i = 0; i < maxDimension; i++)
             {
-                sumVector.Components[i] = copyFirstVector.Components[i] + copySecondVector.Components[i];
+                components[i] = components[i] + secondVector.components[i];
             }
-            return sumVector;
         }
 
-        public Vector GetResidual(Vector secondVector)
+        public void GetResidual(Vector secondVector)
         {
-            int maxDimension = GetSize();
-            if (maxDimension < secondVector.GetSize())
-            {
-                maxDimension = secondVector.GetSize();
-            }
-            Vector copySecondVector = new Vector(maxDimension, secondVector.Components);
-            Vector copyFirstVector = new Vector(maxDimension, Components);
-            Vector sumVector = new Vector(maxDimension);
+            int maxDimension = Math.Max(GetSize(), secondVector.GetSize());
+            Array.Resize(ref components, maxDimension);
             for (int i = 0; i < maxDimension; i++)
             {
-                sumVector.Components[i] = copyFirstVector.Components[i] - copySecondVector.Components[i];
+                components[i] = components[i] - secondVector.components[i];
             }
-            return sumVector;
         }
 
-        public Vector GetScalarMultiplication(double scalar)
-        {
-            Vector resultVector = new Vector(GetSize());
-            for (int i = 0; i < GetSize(); i++)
-            {
-                resultVector.Components[i] = Components[i] * scalar;
-            }
-            return resultVector;
-        }
-
-        public void GetOpposite()
+        public void GetScalarMultiplication(double scalar)
         {
             for (int i = 0; i < GetSize(); i++)
             {
-                Components[i] = Components[i] * (-1);
+                components[i] = components[i] * scalar;
             }
+        }
+
+        public void TurnVector()
+        {
+            GetScalarMultiplication(-1);
         }
 
         public double GetLength()
         {
             double sumSquares = 0;
-            for (int i = 0; i < GetSize(); i++)
+            foreach (double e in components)
             {
-                sumSquares += Math.Pow(Components[i], 2);
+                sumSquares += Math.Pow(e, 2);
             }
+
             return Math.Sqrt(sumSquares);
         }
 
@@ -135,18 +93,19 @@ namespace Vector
         {
             if (i < 0 || i >= GetSize())
             {
-                throw new ArgumentException("Компоненты с таким индексом нет");
+                throw new IndexOutOfRangeException("Компоненты с таким индексом нет");
             }
-            return Components[i];
+
+            return components[i];
         }
 
         public void SetComponent(int i, double component)
         {
             if (i < 0 || i >= GetSize())
             {
-                throw new ArgumentException("Компоненты с таким индексом нет");
+                throw new IndexOutOfRangeException("Компоненты с таким индексом нет");
             }
-            Components[i] = component;
+            components[i] = component;
         }
 
         public override bool Equals(object obj)
@@ -155,84 +114,70 @@ namespace Vector
             {
                 return true;
             }
-            if (ReferenceEquals(obj, null) || obj.GetType() != this.GetType())
+            if (ReferenceEquals(obj, null) || obj.GetType() != GetType())
             {
                 return false;
             }
+
             Vector p = (Vector)obj;
-            bool IsVectorsEquals = false;
             if (GetSize() == p.GetSize())
             {
-                IsVectorsEquals = true;
                 for (int i = 0; i < GetSize(); i++)
                 {
-                    if (Components[i] != p.Components[i])
+                    if (components[i] != p.components[i])
                     {
-                        IsVectorsEquals = false;
-                        break;
+                        return false;
                     }
                 }
+                return true;
             }
-            return IsVectorsEquals;
+
+            return false;
         }
 
         public override int GetHashCode()
         {
             int prime = 13;
             int hash = 1;
-            for (int i = 0; i < GetSize(); i++)
+
+            foreach (double e in components)
             {
-                hash = prime * hash + Components[i].GetHashCode();
+                hash = prime * hash + e.GetHashCode();
             }
+
             return hash;
         }
 
         public override string ToString()
         {
-            return "{" + string.Join(" ; ", Components) + "}";
+            return "{" + string.Join(" ; ", components) + "}";
         }
 
         public static Vector GetSum(Vector firstVector, Vector secondVector)
         {
-            int maxDimension = firstVector.GetSize();
-            if (maxDimension < secondVector.GetSize())
-            {
-                maxDimension = secondVector.GetSize();
-            }
-            Vector copySecondVector = new Vector(maxDimension, secondVector.Components);
-            Vector copyFirstVector = new Vector(maxDimension, firstVector.Components);
-            Vector sumVector = new Vector(maxDimension);
-            for (int i = 0; i < maxDimension; i++)
-            {
-                sumVector.Components[i] = copyFirstVector.Components[i] + copySecondVector.Components[i];
-            }
-            return sumVector;
+            Vector result = new Vector(firstVector);
+            result.GetSum(secondVector);
+            return result;
         }
 
         public static Vector GetResidual(Vector firstVector, Vector secondVector)
         {
-            int maxDimension = firstVector.GetSize();
-            if (maxDimension < secondVector.GetSize())
-            {
-                maxDimension = secondVector.GetSize();
-            }
-            Vector copySecondVector = new Vector(maxDimension, secondVector.Components);
-            Vector copyFirstVector = new Vector(maxDimension, firstVector.Components);
-            Vector sumVector = new Vector(maxDimension);
-            for (int i = 0; i < maxDimension; i++)
-            {
-                sumVector.Components[i] = copyFirstVector.Components[i] - copySecondVector.Components[i];
-            }
-            return sumVector;
+            Vector result = new Vector(firstVector);
+            result.GetResidual(secondVector);
+            return result;
         }
 
-        public static Vector GetScalarMultiplication(Vector firstVector, double scalar)
+        public static Vector GetScalarMultiplication(Vector firstVector, Vector secondVector)
         {
-            Vector resultVector = new Vector(firstVector.GetSize());
-            for (int i = 0; i < firstVector.GetSize(); i++)
+            int maxDimension = Math.Max(firstVector.GetSize(), secondVector.GetSize());
+            int minDimention = Math.Min(firstVector.GetSize(), secondVector.GetSize());
+            Vector resultVector = new Vector(maxDimension);
+
+            for (int i = 0; i < minDimention; i++)
             {
-                resultVector.Components[i] = firstVector.Components[i] * scalar;
+                resultVector.components[i] = firstVector.components[i] * secondVector.components[i];
             }
+
             return resultVector;
         }
     }
