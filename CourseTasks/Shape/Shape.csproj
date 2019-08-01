@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6256E7A9-DBEB-442A-B664-615FA2405FFD}</ProjectGuid>
+    <ProjectGuid>{061DC4D5-04C4-4417-A6FE-613D6172A64E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Shape</RootNamespace>
     <AssemblyName>Shape</AssemblyName>
@@ -42,8 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IShape.cs" />
+    <Compile Include="Shapes\Rectangle.cs" />
+    <Compile Include="Comparer\ShapeAreaComparer.cs" />
+    <Compile Include="Comparer\ShapePerimeterComparer.cs" />
+    <Compile Include="Shapes\Square.cs" />
+    <Compile Include="Shapes\Triangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

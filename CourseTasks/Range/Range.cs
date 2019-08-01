@@ -1,70 +1,82 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Range
 {
-    class Range
+    public class Range
     {
-        private double from;
-        private double to;
-        public static readonly double epsilon = 1.0e-15;
+        public double From { get; set; }
+        public double To { get; set; }
 
         public Range(double from, double to)
         {
-            this.from = from;
-            this.to = to;
+            From = from;
+            To = to;
         }
 
-        public double GetDistance(Range x)
+        public void PrintRange()
         {
-            return Math.Abs(to - from);
+            Console.WriteLine("[{0};{1}]", From, To);
+        }
+
+        public double GetLength()
+        {
+            return To - From;
         }
 
         public bool IsInside(double number)
         {
-            if (number - from > -epsilon && number - to < epsilon)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return number >= From && number <= To;
         }
-    }
 
-
-    class Program
-    {
-        static void Main(string[] args)
+        public Range GetCrossing(Range range)
         {
-            Console.WriteLine("Введите первую точку интервала: ");
-            double from = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("Введите вторую точку интервала: ");
-            double to = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("Введите число: ");
-            double number = Convert.ToDouble(Console.ReadLine());
-
-            if (to < from)
+            if (To <= range.From || From >= range.To)
             {
-                double temp = to;
-                to = from;
-                from = temp;
+                return null;
             }
 
-            Range range = new Range(from, to);
-            Console.WriteLine("Длина интервала [{0};{1}] = {2}", from, to, range.GetDistance(range));
-            if (range.IsInside(number))
+            return new Range(Math.Max(From, range.From), Math.Min(To, range.To));
+        }
+
+        public Range[] GetUnion(Range range)
+        {
+            if (To < range.From || From > range.To)
             {
-                Console.WriteLine("Число {0} принадлежит интервалу", number);
+                return new Range[]
+                {
+                    new Range(From, To),
+                    new Range(range.From, range.To)
+                };
             }
-            else
+
+            return new Range[] { new Range(Math.Min(From, range.From), Math.Max(To, range.To)) };
+        }
+
+        public Range[] GetResidual(Range range)
+        {
+            if (To <= range.From || From >= range.To)
             {
-                Console.WriteLine("Число {0} не принадлежит интервалу", number);
+                return new Range[] { new Range(From, To) };
             }
+            if (range.From <= From && To <= range.To)
+            {
+                return new Range[] { };
+            }
+            if (From < range.From && To > range.To)
+            {
+                return new Range[]
+                {
+                new Range(From, range.From),
+                new Range(range.To, To)
+                };
+            }
+            if (range.From < From)
+            {
+                return new Range[] { new Range(range.To, To) };
+            }
+
+            return new Range[] { new Range(From, range.From) };
         }
     }
 }
+

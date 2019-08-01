@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Academits
+namespace Range
 {
     class Program
     {
