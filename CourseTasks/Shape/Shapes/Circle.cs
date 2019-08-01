@@ -4,8 +4,6 @@ namespace Shape
 {
     class Circle : IShape
     {
-        private static readonly double epsilon;
-
         public double Radius { get; set; }
 
         public Circle(double radius)

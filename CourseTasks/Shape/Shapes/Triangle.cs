@@ -4,8 +4,6 @@ namespace Shape
 {
     class Triangle : IShape
     {
-        private static readonly double epsilon;
-
         public double X1 { get; set; }
         public double X2 { get; set; }
         public double X3 { get; set; }
@@ -33,7 +31,7 @@ namespace Shape
             return Math.Max(Math.Max(Y1, Y2), Y3) - Math.Min(Math.Min(Y1, Y2), Y3);
         }
 
-        public double GetSideLength(double x1, double x2, double y1, double y2)
+        public static double GetSideLength(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
         }
@@ -41,12 +39,12 @@ namespace Shape
         public double GetArea()
         {
             double halfPerimeter = GetPerimeter() / 2;
-            return Math.Sqrt(halfPerimeter * (halfPerimeter - GetSideLength(X1, X2, Y1, Y2)) * (halfPerimeter - GetSideLength(X2, X3, Y2, Y3)) * (halfPerimeter - GetSideLength(X1, X3, Y1, Y3)));
+            return Math.Sqrt(halfPerimeter * (halfPerimeter - GetSideLength(X1, Y1, X2, Y2)) * (halfPerimeter - GetSideLength(X2, Y2, X3, Y3)) * (halfPerimeter - GetSideLength(X1, Y1, X3, Y3)));
         }
 
         public double GetPerimeter()
         {
-            return GetSideLength(X1, X2, Y1, Y2) + GetSideLength(X2, X3, Y2, Y3) + GetSideLength(X1, X3, Y1, Y3);
+            return GetSideLength(X1, Y1, X2, Y2) + GetSideLength(X2, Y2, X3, Y3) + GetSideLength(X1, Y1, X3, Y3);
         }
 
         public override string ToString()

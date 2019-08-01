@@ -4,8 +4,6 @@ namespace Shape
 {
     class Rectangle : IShape
     {
-        private static readonly double epsilon;
-
         public double Width { get; set; }
         public double Height { get; set; }
 

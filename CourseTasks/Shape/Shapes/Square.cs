@@ -4,8 +4,6 @@ namespace Shape
 {
     class Square : IShape
     {
-        private static readonly double epsilon;
-
         public double Width { get; set; }
 
         public Square(double width)
