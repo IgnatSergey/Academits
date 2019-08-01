@@ -8,8 +8,8 @@ namespace Range
         {
             double number = -15;
 
-            Range range1 = new Range(-3, 0);
-            Range range2 = new Range(-9, -3);
+            Range range1 = new Range(3, 7);
+            Range range2 = new Range(2, 3);
 
             Range rangeCross = range1.GetCrossing(range2);
             Range[] rangesUnion = range1.GetUnion(range2);

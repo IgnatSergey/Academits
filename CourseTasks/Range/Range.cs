@@ -58,21 +58,24 @@ namespace Range
             {
                 return new Range[] { new Range(From, To) };
             }
+
             if (range.From <= From && To <= range.To)
             {
                 return new Range[] { };
             }
+
             if (From < range.From && To > range.To)
             {
                 return new Range[]
                 {
-                new Range(From, range.From),
-                new Range(range.To, To)
+                    new Range(From, range.From),
+                    new Range(range.To, To)
                 };
             }
-            if (range.From < From)
+
+            if (range.From <= From)
             {
-                return new Range[] { new Range(range.To, To) };
+                return new Range[] { new Range(range.To, To) }; 
             }
 
             return new Range[] { new Range(From, range.From) };
