@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vector
+namespace Matrix
 {
     public class Vector
     {
@@ -21,7 +21,7 @@ namespace Vector
         {
         }
 
-        public Vector(double[] array)
+        public Vector(params double[] array)
             : this(array.Length)
         {
             Array.Copy(array, components, array.Length);
