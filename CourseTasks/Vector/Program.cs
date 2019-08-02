@@ -17,31 +17,31 @@ namespace Vector
             Console.WriteLine("copyArrayVector = " + copyArrayVector);
             Console.WriteLine(new string('-', 100));
 
-            Vector partialArrayVector = new Vector(4, array);
+            Vector partialArrayVector = new Vector(8, array);
             Console.WriteLine("partialTestVector = " + partialArrayVector);
             Console.WriteLine("Размерность partialTesVector = " + partialArrayVector.GetSize());
             Console.WriteLine(new string('-', 100));
 
             Vector firstVector = new Vector(new double[] { 3, 3, 4, 4 });
-            Vector secondVector = new Vector(new double[] { 1, 3, -2, 4, 5, 7 });
+            Vector secondVector = new Vector(new double[] { 1, 3, 7, 8, 8, 8, 4 });
             Console.WriteLine("Сумма векторов {0} и {1} равна:", firstVector, secondVector);
-            firstVector.GetSum(secondVector);
+            firstVector.Sum(secondVector);
             Console.WriteLine(firstVector);
             Console.WriteLine(new string('-', 100));
 
             Console.WriteLine("Разность векторов {0} и {1} равна:", firstVector, secondVector);
-            firstVector.GetResidual(secondVector);
+            firstVector.Subtract(secondVector);
             Console.WriteLine(firstVector);
             Console.WriteLine(new string('-', 100));
 
             double scalar = 3;
             Console.WriteLine("Результат умножения вектора {0} на скаляр {1}: ", firstVector, scalar);
-            firstVector.GetScalarMultiplication(scalar);
+            firstVector.MultiplicationByNumber(scalar);
             Console.WriteLine(firstVector);
             Console.WriteLine(new string('-', 100));
 
             Console.WriteLine("Вектор обратный вектору {0}:", firstVector);
-            firstVector.TurnVector();
+            firstVector.Turn();
             Console.WriteLine(firstVector);
             Console.WriteLine(new string('-', 100));
 
