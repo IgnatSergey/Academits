@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vector
+namespace Vectors
 {
     class Program
     {

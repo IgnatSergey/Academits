@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Vectors;
 
 namespace Matrix
 {
@@ -12,9 +10,9 @@ namespace Matrix
 
         public Matrix(int n, int m)
         {
-            if (n <= 0)
+            if (n <= 0 || m <= 0)
             {
-                throw new ArgumentException("Размер столбца должен быть больше 0");
+                throw new ArgumentException("Размеры матрицы должны быть больше 0");
             }
 
             matrix = new Vector[n];
@@ -26,9 +24,9 @@ namespace Matrix
 
         public Matrix(double[,] array)
         {
-            if (array.GetLength(0) == 0)
+            if (array.GetLength(0) == 0 || array.GetLength(1) == 0)
             {
-                throw new ArgumentOutOfRangeException("Размер столбца должен быть больше 0");
+                throw new ArgumentOutOfRangeException("Размеры матрицы должны быть больше 0");
             }
 
             matrix = new Vector[array.GetLength(0)];
@@ -45,29 +43,29 @@ namespace Matrix
 
         public Matrix(Vector[] array)
         {
-            if (array.Length == 0)
+            if (array.Length == 0 || array[0].GetSize() == 0)
             {
-                throw new ArgumentOutOfRangeException("Размер столбца должен быть больше 0");
+                throw new ArgumentOutOfRangeException("Размеры матрицы должны быть больше 0");
             }
 
-            int maxVectorDimention = array[0].GetSize();
+            int maxVectorDimension = array[0].GetSize();
             for (int i = 1; i < array.Length; i++)
             {
-                if (maxVectorDimention < array[i].GetSize())
+                if (maxVectorDimension < array[i].GetSize())
                 {
-                    maxVectorDimention = array[i].GetSize();
+                    maxVectorDimension = array[i].GetSize();
                 }
             }
 
             matrix = new Vector[array.Length];
             for (int i = 0; i < array.Length; i++)
             {
-                double[] arrayVector = new double[maxVectorDimention];
+                double[] arrayVector = new double[array[i].GetSize()];
                 for (int j = 0; j < array[i].GetSize(); j++)
                 {
                     arrayVector[j] = array[i].GetComponent(j);
                 }
-                matrix[i] = new Vector(maxVectorDimention, arrayVector);
+                matrix[i] = new Vector(maxVectorDimension, arrayVector);
             }
         }
 
@@ -87,22 +85,23 @@ namespace Matrix
             {
                 lineMatrix.Append(matrix[i] + ",");
             }
+
             return lineMatrix.ToString().Remove(lineMatrix.Length - 1, 1) + "}";
         }
 
-        public int GetSize(Dimention directionDimention)
+        public int GetColumnSize()
         {
-            if (directionDimention == 0)
-            {
-                return matrix.Length;
-            }
+            return matrix.Length;
+        }
 
+        public int GetLineSize()
+        {
             return matrix[0].GetSize();
         }
 
         public Vector GetLineVector(int index)
         {
-            if (index < 0 || index >= matrix.Length)
+            if (index < 0 || index >= GetColumnSize())
             {
                 throw new IndexOutOfRangeException("Вектора-строки с таким индексом нет");
             }
@@ -112,11 +111,12 @@ namespace Matrix
 
         public void SetLineVector(int index, Vector userVector)
         {
-            if (index < 0 || index >= matrix.Length)
+            if (index < 0 || index >= GetColumnSize())
             {
                 throw new IndexOutOfRangeException("Вектора-строки с таким индексом нет");
             }
-            if (userVector.GetSize() != GetSize(Dimention.LineDimention))
+
+            if (userVector.GetSize() != GetLineSize())
             {
                 throw new ArgumentOutOfRangeException("Размер вектора-строки должен совпадать с размером матрицы");
             }
@@ -126,13 +126,13 @@ namespace Matrix
 
         public Vector GetColumnVector(int index)
         {
-            if (index < 0 || index >= matrix[0].GetSize())
+            if (index < 0 || index >= GetLineSize())
             {
                 throw new IndexOutOfRangeException("Вектора-столбца с таким индексом нет");
             }
 
-            double[] arrayColumnVector = new double[matrix.Length];
-            for (int i = 0; i < matrix.Length; i++)
+            double[] arrayColumnVector = new double[GetColumnSize()];
+            for (int i = 0; i < GetColumnSize(); i++)
             {
                 arrayColumnVector[i] = matrix[i].GetComponent(index);
             }
@@ -140,48 +140,49 @@ namespace Matrix
             return new Vector(arrayColumnVector);
         }
 
-        public void TransposeMatrix()
+        public void Transpose()
         {
             Matrix copyUserMatrix = new Matrix(this);
-            int newLineDimention = GetSize(Dimention.LineDimention);
-            Array.Resize(ref matrix, newLineDimention);
-            for (int i = 0; i < newLineDimention; i++)
+            int newLineSize = GetLineSize();
+            Array.Resize(ref matrix, newLineSize);
+
+            for (int i = 0; i < newLineSize; i++)
             {
                 matrix[i] = new Vector(copyUserMatrix.GetColumnVector(i));
             }
         }
 
-        public void GetScalarMultiplication(double scalar)
+        public void MultiplicationByNumber(double scalar)
         {
-            for (int i = 0; i < matrix.Length; i++)
+            for (int i = 0; i < GetColumnSize(); i++)
             {
-                matrix[i].GetScalarMultiplication(scalar);
+                matrix[i].MultiplicationByNumber(scalar);
             }
         }
 
         public double GetDeterminant()
         {
-            if (GetSize(Dimention.ColumnDimention) != GetSize(Dimention.LineDimention))
+            if (GetColumnSize() != GetLineSize())
             {
                 throw new ArgumentOutOfRangeException("Матрица не квадратная");
             }
 
-            if (GetSize(Dimention.LineDimention) == 1)
+            if (GetLineSize() == 1)
             {
                 return matrix[0].GetComponent(0);
             }
-            else if (GetSize(Dimention.LineDimention) == 2)
+            else if (GetLineSize() == 2)
             {
                 return matrix[0].GetComponent(0) * matrix[1].GetComponent(1) - matrix[1].GetComponent(0) * matrix[0].GetComponent(1);
             }
 
             double determinant = 0;
-            for (int i = 0; i < GetSize(Dimention.ColumnDimention); i++)
+            for (int i = 0; i < GetColumnSize(); i++)
             {
-                double[,] minor = new double[GetSize(Dimention.ColumnDimention) - 1, GetSize(Dimention.ColumnDimention) - 1];
-                for (int j = 0; j < GetSize(Dimention.ColumnDimention) - 1; ++j)
+                double[,] minor = new double[GetColumnSize() - 1, GetColumnSize() - 1];
+                for (int j = 0; j < GetColumnSize() - 1; ++j)
                 {
-                    for (int k = 0; k < GetSize(Dimention.ColumnDimention) - 1; ++k)
+                    for (int k = 0; k < GetColumnSize() - 1; ++k)
                     {
                         if (k >= i)
                         {
@@ -201,87 +202,80 @@ namespace Matrix
 
         public void MultiplicationByColumnVector(Vector userVector)
         {
-            if (GetSize(Dimention.LineDimention) != userVector.GetSize())
+            if (GetLineSize() != userVector.GetSize())
             {
                 throw new ArgumentOutOfRangeException("Число сталбцов в матрице должно совпадать с числом строк в вектор-столбце");
             }
 
             Matrix copyMatrix = new Matrix(this);
-            Array.Resize(ref matrix, userVector.GetSize());
-            for (int i = 0; i < userVector.GetSize(); i++)
+            Array.Resize(ref matrix, GetColumnSize());
+            for (int i = 0; i < GetColumnSize(); i++)
             {
-                double elementResultColumnVector = 0;
+                double elementColumnVector = 0;
                 for (int j = 0; j < userVector.GetSize(); j++)
                 {
-                    elementResultColumnVector += copyMatrix.matrix[i].GetComponent(j) * userVector.GetComponent(j);
+                    elementColumnVector += copyMatrix.matrix[i].GetComponent(j) * userVector.GetComponent(j);
                 }
-                matrix[i] = new Vector(elementResultColumnVector);
+                matrix[i] = new Vector(elementColumnVector);
             }
         }
 
-        public void SumMatrix(Matrix userMatrix)
+        public void Sum(Matrix userMatrix)
         {
-            if (GetSize(Dimention.LineDimention) != userMatrix.GetSize(Dimention.LineDimention) || GetSize(Dimention.ColumnDimention) != userMatrix.GetSize(Dimention.ColumnDimention))
+            if (GetLineSize() != userMatrix.GetLineSize() || GetColumnSize() != userMatrix.GetColumnSize())
+            {
+                throw new ArgumentOutOfRangeException("Матрицы должны быть одиакого размера");
+            }
+
+            for (int i = 0; i < GetColumnSize(); i++)
+            {
+                matrix[i].Sum(userMatrix.matrix[i]);
+            }
+        }
+
+        public void Subtract(Matrix userMatrix)
+        {
+            if (GetLineSize() != userMatrix.GetLineSize() || GetColumnSize() != userMatrix.GetColumnSize())
             {
                 throw new ArgumentOutOfRangeException("Матрицы должны быть одиакого размера");
             }
 
             for (int i = 0; i < matrix.Length; i++)
             {
-                matrix[i].GetSum(userMatrix.matrix[i]);
-            }
-        }
-
-        public void SubtractMatrix(Matrix userMatrix)
-        {
-            if (GetSize(Dimention.LineDimention) != userMatrix.GetSize(Dimention.LineDimention) || GetSize(Dimention.ColumnDimention) != userMatrix.GetSize(Dimention.ColumnDimention))
-            {
-                throw new ArgumentOutOfRangeException("Матрицы должны быть одиакого размера");
-            }
-
-            for (int i = 0; i < matrix.Length; i++)
-            {
-                matrix[i].GetResidual(userMatrix.matrix[i]);
+                matrix[i].Subtract(userMatrix.matrix[i]);
             }
         }
 
         public static Matrix GetSum(Matrix firstMatrix, Matrix secondMatrix)
         {
             Matrix copyFirstMatrix = new Matrix(firstMatrix);
-            copyFirstMatrix.SumMatrix(secondMatrix);
+            copyFirstMatrix.Sum(secondMatrix);
             return copyFirstMatrix;
         }
 
         public static Matrix GetResidual(Matrix firstMatrix, Matrix secondMatrix)
         {
             Matrix copyFirstMatrix = new Matrix(firstMatrix);
-            copyFirstMatrix.SubtractMatrix(secondMatrix);
+            copyFirstMatrix.Subtract(secondMatrix);
             return copyFirstMatrix;
         }
 
         public static Matrix GetMultiplication(Matrix firstMatrix, Matrix secondMatrix)
         {
-            if (firstMatrix.GetSize(Dimention.LineDimention) != secondMatrix.GetSize(Dimention.ColumnDimention))
+            if (firstMatrix.GetLineSize() != secondMatrix.GetColumnSize())
             {
                 throw new ArgumentOutOfRangeException("Первая матрица должна иметь столько же столбцов сколько строк во второй");
             }
 
-            Matrix result = new Matrix(firstMatrix.GetSize(Dimention.ColumnDimention), secondMatrix.GetSize(Dimention.ColumnDimention));
-            for (int k = 0; k < firstMatrix.GetSize(Dimention.ColumnDimention); k++)
+            Matrix result = new Matrix(firstMatrix.GetColumnSize(), secondMatrix.GetLineSize());
+            for (int i = 0; i < firstMatrix.GetColumnSize(); i++)
             {
-                double[] arrayVector = new double[secondMatrix.GetSize(Dimention.LineDimention)];
-                Vector multiplicationVectors = new Vector(firstMatrix.GetSize(Dimention.LineDimention));
-                for (int j = 0; j < secondMatrix.GetSize(Dimention.LineDimention); j++)
+                double[] arrayVector = new double[secondMatrix.GetLineSize()];
+                for (int j = 0; j < secondMatrix.GetLineSize(); j++)
                 {
-                    multiplicationVectors = Vector.GetScalarMultiplication(firstMatrix.GetLineVector(k), secondMatrix.GetColumnVector(j));
-                    double vectorElement = 0;
-                    for (int m = 0; m < multiplicationVectors.GetSize(); m++)
-                    {
-                        vectorElement += multiplicationVectors.GetComponent(m);
-                    }
-                    arrayVector[j] = vectorElement;
+                    arrayVector[j] = Vector.GetScalarMultiplication(firstMatrix.GetLineVector(i), secondMatrix.GetColumnVector(j)); ;
                 }
-                result.matrix[k] = new Vector(arrayVector);
+                result.matrix[i] = new Vector(arrayVector);
             }
 
             return result;

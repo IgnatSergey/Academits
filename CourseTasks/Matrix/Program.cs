@@ -1,4 +1,5 @@
 ﻿using System;
+using Vectors;
 
 namespace Matrix
 {
@@ -31,7 +32,7 @@ namespace Matrix
             Console.WriteLine("copyArrayVectorMatrix = " + copyArrayVectorMatrix);
             Console.WriteLine(new string('-', 100));
 
-            Console.WriteLine("Размеры матрицы {0}: ({1}*{2})", arrayVectorMatrix, arrayVectorMatrix.GetSize(Dimention.ColumnDimention), arrayVectorMatrix.GetSize(Dimention.LineDimention));
+            Console.WriteLine("Размеры матрицы {0}: ({1}*{2})", arrayVectorMatrix, arrayVectorMatrix.GetColumnSize(), arrayVectorMatrix.GetLineSize());
             Console.WriteLine(new string('-', 100));
 
             int index = 2;
@@ -44,14 +45,14 @@ namespace Matrix
             Console.WriteLine(new string('-', 100));
 
             Console.WriteLine("arrayVectorMatrix = {0}", arrayVectorMatrix);
-            arrayVectorMatrix.TransposeMatrix();
+            arrayVectorMatrix.Transpose();
             Console.WriteLine("Транспонированная arrayVectorMatrix = {0}", arrayVectorMatrix);
             Console.WriteLine(new string('-', 100));
 
-            arrayVectorMatrix.TransposeMatrix();
+            arrayVectorMatrix.Transpose();
             double scalar = 2;
             Console.WriteLine("Произведение матрицы {0} на скаляр {1} = ", arrayVectorMatrix, scalar);
-            arrayVectorMatrix.GetScalarMultiplication(scalar);
+            arrayVectorMatrix.MultiplicationByNumber(scalar);
             Console.WriteLine(arrayVectorMatrix);
             Console.WriteLine(new string('-', 100));
 
@@ -87,11 +88,11 @@ namespace Matrix
             Matrix firstArrayVectorMatrix = new Matrix(firstArrayVector);
             Matrix secondArrayVectorMatrix = new Matrix(secondArrayVector);
             Console.WriteLine("Результат сложения матрицы {0} и матрицы {1}:", firstArrayVectorMatrix, secondArrayVectorMatrix);
-            firstArrayVectorMatrix.SumMatrix(secondArrayVectorMatrix);
+            firstArrayVectorMatrix.Sum(secondArrayVectorMatrix);
             Console.WriteLine(firstArrayVectorMatrix);
 
             Console.WriteLine("Результат вычитания матрицы {0} из матрицы {1}:", secondArrayVector, firstArrayVectorMatrix);
-            firstArrayVectorMatrix.SubtractMatrix(secondArrayVectorMatrix);
+            firstArrayVectorMatrix.Subtract(secondArrayVectorMatrix);
             Console.WriteLine(firstArrayVectorMatrix);
             Console.WriteLine(new string('-', 100));
 
