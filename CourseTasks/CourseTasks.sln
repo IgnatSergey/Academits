@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Range", "Range\Range.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectors", "Vectors\Vectors.csproj", "{A0E1253F-D0B6-40F9-84B8-90B449DD582A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrayListHome", "ArrayListHome\ArrayListHome.csproj", "{312C8FAB-B850-49D2-A933-34D5762E86BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A0E1253F-D0B6-40F9-84B8-90B449DD582A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0E1253F-D0B6-40F9-84B8-90B449DD582A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0E1253F-D0B6-40F9-84B8-90B449DD582A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{312C8FAB-B850-49D2-A933-34D5762E86BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312C8FAB-B850-49D2-A933-34D5762E86BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312C8FAB-B850-49D2-A933-34D5762E86BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312C8FAB-B850-49D2-A933-34D5762E86BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
