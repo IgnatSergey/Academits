@@ -23,12 +23,22 @@ namespace Vectors
 
         public Vector(params double[] array)
         {
+            if (array.Length == 0)
+            {
+                throw new ArgumentException("Размерность вектора должа быть больше 0");
+            }
+
             components = new double[array.Length];
             Array.Copy(array, components, array.Length);
         }
 
         public Vector(int n, double[] array)
         {
+            if (n <= 0)
+            {
+                throw new ArgumentException("Размерность вектора должа быть больше 0");
+            }
+
             components = new double[n];
             int minDimension = Math.Min(n, array.Length);
             Array.Copy(array, components, minDimension);
