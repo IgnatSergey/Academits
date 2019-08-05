@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shape
+namespace Shape.Shape
 {
     class Rectangle : IShape
     {
@@ -44,10 +44,12 @@ namespace Shape
             {
                 return true;
             }
+
             if (ReferenceEquals(obj, null) || obj.GetType() != this.GetType())
             {
                 return false;
             }
+
             Rectangle p = (Rectangle)obj;
             return Width == p.Width && Height == p.Height;
         }

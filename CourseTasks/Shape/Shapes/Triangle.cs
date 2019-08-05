@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shape
+namespace Shape.Shape
 {
     class Triangle : IShape
     {
@@ -31,7 +31,7 @@ namespace Shape
             return Math.Max(Math.Max(Y1, Y2), Y3) - Math.Min(Math.Min(Y1, Y2), Y3);
         }
 
-        public static double GetSideLength(double x1, double y1, double x2, double y2)
+        private static double GetSideLength(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
         }
@@ -39,7 +39,9 @@ namespace Shape
         public double GetArea()
         {
             double halfPerimeter = GetPerimeter() / 2;
-            return Math.Sqrt(halfPerimeter * (halfPerimeter - GetSideLength(X1, Y1, X2, Y2)) * (halfPerimeter - GetSideLength(X2, Y2, X3, Y3)) * (halfPerimeter - GetSideLength(X1, Y1, X3, Y3)));
+            return Math.Sqrt(halfPerimeter * (halfPerimeter - GetSideLength(X1, Y1, X2, Y2))
+                * (halfPerimeter - GetSideLength(X2, Y2, X3, Y3))
+                * (halfPerimeter - GetSideLength(X1, Y1, X3, Y3)));
         }
 
         public double GetPerimeter()
@@ -49,7 +51,9 @@ namespace Shape
 
         public override string ToString()
         {
-            return $"Координаты первой точки треугольника: [{X1};{Y1}]" + Environment.NewLine + $"Координаты второй точки треугольника: [{X2};{Y2}]" + Environment.NewLine + $"Координаты третьей точки треугольника: [{X3};{Y3}]";
+            return $"Координаты первой точки треугольника: [{X1};{Y1}]" + Environment.NewLine
+                + $"Координаты второй точки треугольника: [{X2};{Y2}]" + Environment.NewLine
+                + $"Координаты третьей точки треугольника: [{X3};{Y3}]";
         }
 
         public override bool Equals(object obj)
@@ -58,10 +62,12 @@ namespace Shape
             {
                 return true;
             }
+
             if (ReferenceEquals(obj, null) || obj.GetType() != this.GetType())
             {
                 return false;
             }
+
             Triangle p = (Triangle)obj;
             return X1 == p.X1 && X2 == p.X2 && X3 == p.X3 && Y1 == p.Y1 && Y2 == p.Y2 && Y3 == p.Y3;
         }

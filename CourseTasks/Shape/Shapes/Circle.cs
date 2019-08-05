@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shape
+namespace Shape.Shape
 {
     class Circle : IShape
     {
@@ -42,10 +42,12 @@ namespace Shape
             {
                 return true;
             }
+
             if (ReferenceEquals(obj, null) || obj.GetType() != this.GetType())
             {
                 return false;
             }
+
             Circle p = (Circle)obj;
             return Radius == p.Radius;
         }

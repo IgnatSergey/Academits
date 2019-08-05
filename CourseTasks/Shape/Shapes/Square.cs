@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shape
+namespace Shape.Shape
 {
     class Square : IShape
     {
@@ -42,10 +42,12 @@ namespace Shape
             {
                 return true;
             }
+
             if (ReferenceEquals(obj, null) || obj.GetType() != this.GetType())
             {
                 return false;
             }
+
             Square p = (Square)obj;
             return Width == p.Width;
         }
