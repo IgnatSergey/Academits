@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9C901F25-F569-4887-A9DB-24C6C2257830}</ProjectGuid>
+    <ProjectGuid>{A0E1253F-D0B6-40F9-84B8-90B449DD582A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Vector</RootNamespace>
-    <AssemblyName>Vector</AssemblyName>
+    <RootNamespace>Vectors</RootNamespace>
+    <AssemblyName>Vectors</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
