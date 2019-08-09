@@ -1,6 +1,6 @@
 ﻿using System;
 using Shape.Comparer;
-using Shape.Shape;
+using Shape.Shapes;
 
 namespace Shape
 {

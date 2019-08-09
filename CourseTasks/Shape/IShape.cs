@@ -1,5 +1,4 @@
-﻿
-namespace Shape
+﻿namespace Shape
 {
     public interface IShape
     {

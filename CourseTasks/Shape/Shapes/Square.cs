@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shape.Shape
+namespace Shape.Shapes
 {
     class Square : IShape
     {
