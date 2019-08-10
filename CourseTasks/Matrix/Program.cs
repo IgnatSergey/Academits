@@ -32,16 +32,16 @@ namespace Matrix
             Console.WriteLine("copyArrayVectorMatrix = " + copyArrayVectorMatrix);
             Console.WriteLine(new string('-', 100));
 
-            Console.WriteLine("Размеры матрицы {0}: ({1}*{2})", arrayVectorMatrix, arrayVectorMatrix.GetColumnSize(), arrayVectorMatrix.GetLineSize());
+            Console.WriteLine("Размеры матрицы {0}: ({1}*{2})", arrayVectorMatrix, arrayVectorMatrix.GetRowsAmount(), arrayVectorMatrix.GetColumnsAmount());
             Console.WriteLine(new string('-', 100));
 
             int index = 2;
-            Console.WriteLine("Вектор-строка матрицы {0} под индексом {1}: {2}", arrayVectorMatrix, index, arrayVectorMatrix.GetLineVector(index));
+            Console.WriteLine("Вектор-строка матрицы {0} под индексом {1}: {2}", arrayVectorMatrix, index, arrayVectorMatrix.GetRow(index));
             Vector userVector = new Vector(3, 4, 2, 55, 77, 0);
-            arrayVectorMatrix.SetLineVector(index, userVector);
-            Console.WriteLine("Вектор-строка матрицы {0} под индексом {1}: {2}", arrayVectorMatrix, index, arrayVectorMatrix.GetLineVector(index));
+            arrayVectorMatrix.SetRow(index, userVector);
+            Console.WriteLine("Вектор-строка матрицы {0} под индексом {1}: {2}", arrayVectorMatrix, index, arrayVectorMatrix.GetRow(index));
             int indexColumnVector = 4;
-            Console.WriteLine("Вектор-столбец матрицы {0} под индексом {1}: {2}", arrayVectorMatrix, indexColumnVector, arrayVectorMatrix.GetColumnVector(indexColumnVector));
+            Console.WriteLine("Вектор-столбец матрицы {0} под индексом {1}: {2}", arrayVectorMatrix, indexColumnVector, arrayVectorMatrix.GetColumn(indexColumnVector));
             Console.WriteLine(new string('-', 100));
 
             Console.WriteLine("arrayVectorMatrix = {0}", arrayVectorMatrix);
@@ -68,9 +68,7 @@ namespace Matrix
             Console.WriteLine(new string('-', 100));
 
             Vector columnVector = new Vector(3, 5, 4, 6);
-            Console.WriteLine("Результат умножения матрицы {0} на вектор-столбец {1}:", arrayTestVectorMatrix, columnVector);
-            arrayTestVectorMatrix.MultiplicationByColumnVector(columnVector);
-            Console.WriteLine(arrayTestVectorMatrix);
+            Console.WriteLine("Результат умножения матрицы {0} на вектор-столбец {1}: {2}", arrayTestVectorMatrix, columnVector, arrayTestVectorMatrix.MultiplicationByColumnVector(columnVector));
             Console.WriteLine(new string('-', 100));
 
             Vector[] firstArrayVector =
@@ -91,7 +89,7 @@ namespace Matrix
             firstArrayVectorMatrix.Sum(secondArrayVectorMatrix);
             Console.WriteLine(firstArrayVectorMatrix);
 
-            Console.WriteLine("Результат вычитания матрицы {0} из матрицы {1}:", secondArrayVector, firstArrayVectorMatrix);
+            Console.WriteLine("Результат вычитания матрицы {0} из матрицы {1}:", secondArrayVectorMatrix, firstArrayVectorMatrix);
             firstArrayVectorMatrix.Subtract(secondArrayVectorMatrix);
             Console.WriteLine(firstArrayVectorMatrix);
             Console.WriteLine(new string('-', 100));
