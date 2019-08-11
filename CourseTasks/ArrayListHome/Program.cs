@@ -7,16 +7,61 @@ namespace ArrayListHome
 {
     class Program
     {
+        public static void GetListWithoutEvenNumbers(List<int> userList)
+        {
+            for (int i = 0; i < userList.Count; i++)
+            {
+                if (userList[i] % 2 == 0)
+                {
+                    userList.RemoveAt(i);
+                    i--;
+                }
+            }
+            userList.TrimExcess();
+        }
+
+        public static List<int> GetListWithoutRepetitions(List<int> userList)
+        {
+            if (userList.Count == 0)
+            {
+                return new List<int> { };
+            }
+
+            List<int> userIntListWithoutRepetitions = new List<int>(userList.Count);
+            userIntListWithoutRepetitions.Add(userList[0]);
+            for (int i = 1; i < userList.Count; i++)
+            {
+                if (userIntListWithoutRepetitions.Contains(userList[i]))
+                {
+                    continue;
+                }
+                else
+                {
+                    userIntListWithoutRepetitions.Add(userList[i]);
+                }
+            }
+            userIntListWithoutRepetitions.TrimExcess();
+
+            return userIntListWithoutRepetitions;
+        }
+
         static void Main(string[] args)
         {
             List<string> userList = new List<string>();
-            using (StreamReader reader = new StreamReader("file.txt"))
+            try
             {
-                string currentLine;
-                while ((currentLine = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader("file.txt"))
                 {
-                    userList.Add(currentLine);
+                    string currentLine;
+                    while ((currentLine = reader.ReadLine()) != null)
+                    {
+                        userList.Add(currentLine);
+                    }
                 }
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
             }
 
             foreach (string e in userList)
@@ -30,18 +75,9 @@ namespace ArrayListHome
             {
                 Console.Write(e + " ");
             }
-
-            for (int i = 0; i < userIntList.Count(); i++)
-            {
-                if (userIntList[i] % 2 == 0)
-                {
-                    userIntList.RemoveAt(i);
-                    i--;
-                }
-            }
             Console.WriteLine();
 
-            userIntList.TrimExcess();
+            GetListWithoutEvenNumbers(userIntList);
             foreach (int e in userIntList)
             {
                 Console.Write(e + " ");
@@ -49,35 +85,14 @@ namespace ArrayListHome
             Console.WriteLine();
             Console.WriteLine(new string('-', 100));
 
-            List<int> userIntList2 = new List<int> { 4, 4, 56, 4, 7, 7, 36, 56, 4, 100 };
-            List<int> userIntListWithoutRepetitions = new List<int>(userIntList2.Count());
-
+            List<int> userIntList2 = new List<int> { 3, 4, 4, 56, 7, 3, 88, 3, 45 };
             foreach (int e in userIntList2)
             {
                 Console.Write(e + " ");
             }
             Console.WriteLine();
 
-            userIntListWithoutRepetitions.Add(userIntList2[0]);
-            for (int i = 1; i < userIntList2.Count(); i++)
-            {
-                bool isNotRepetitions = true;
-                for (int j = i - 1; j >= 0; j--)
-                {
-                    if (userIntList2[j] == userIntList2[i])
-                    {
-                        isNotRepetitions = false;
-                        break;
-                    }
-                }
-
-                if (isNotRepetitions)
-                {
-                    userIntListWithoutRepetitions.Add(userIntList2[i]);
-                }
-            }
-
-            userIntListWithoutRepetitions.TrimExcess();
+            List<int> userIntListWithoutRepetitions = GetListWithoutRepetitions(userIntList2);
             foreach (int e in userIntListWithoutRepetitions)
             {
                 Console.Write(e + " ");
