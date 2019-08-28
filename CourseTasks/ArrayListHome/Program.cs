@@ -7,7 +7,7 @@ namespace ArrayListHome
 {
     class Program
     {
-        public static void GetListWithoutEvenNumbers(List<int> userList)
+        public static void DeleteEvenNumbers(List<int> userList)
         {
             for (int i = 0; i < userList.Count; i++)
             {
@@ -22,22 +22,13 @@ namespace ArrayListHome
 
         public static List<int> GetListWithoutRepetitions(List<int> userList)
         {
-            if (userList.Count == 0)
-            {
-                return new List<int> { };
-            }
-
             List<int> userIntListWithoutRepetitions = new List<int>(userList.Count);
-            userIntListWithoutRepetitions.Add(userList[0]);
-            for (int i = 1; i < userList.Count; i++)
+
+            for (int i = 0; i < userList.Count; i++)
             {
-                if (userIntListWithoutRepetitions.Contains(userList[i]))
+                if (!userIntListWithoutRepetitions.Contains(userList[i]))
                 {
-                    continue;
-                }
-                else
-                {
-                    userIntListWithoutRepetitions.Add(userList[i]);
+                    userIntListWithoutRepetitions.Add(userList[i]); ;
                 }
             }
             userIntListWithoutRepetitions.TrimExcess();
@@ -61,7 +52,11 @@ namespace ArrayListHome
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e);
             }
 
             foreach (string e in userList)
@@ -77,7 +72,7 @@ namespace ArrayListHome
             }
             Console.WriteLine();
 
-            GetListWithoutEvenNumbers(userIntList);
+            DeleteEvenNumbers(userIntList);
             foreach (int e in userIntList)
             {
                 Console.Write(e + " ");
