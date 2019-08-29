@@ -28,7 +28,7 @@ namespace ArrayListHome
             {
                 if (!userIntListWithoutRepetitions.Contains(userList[i]))
                 {
-                    userIntListWithoutRepetitions.Add(userList[i]); ;
+                    userIntListWithoutRepetitions.Add(userList[i]);
                 }
             }
             userIntListWithoutRepetitions.TrimExcess();
@@ -39,6 +39,7 @@ namespace ArrayListHome
         static void Main(string[] args)
         {
             List<string> userList = new List<string>();
+
             try
             {
                 using (StreamReader reader = new StreamReader("file.txt"))
@@ -52,11 +53,11 @@ namespace ArrayListHome
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
 
             foreach (string e in userList)
